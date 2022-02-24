@@ -1,0 +1,16 @@
+.tablink{
+    text-decoration: none;
+    color: #007499;
+    
+}
+
+.tablink:hover{
+    background-color:rgba(74,165,151,.3);
+  
+    
+}
+
+.liTab{
+     display: block;
+      padding: 10px
+}
