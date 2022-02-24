@@ -1,4 +1,5 @@
 const adminModel = require('../Models/adminModel')
+const userModel = require('../Models/userModel')
 const joi = require('joi')
 const bcryptjs = require('bcryptjs')
 // const {adminGenerateAccessToken} = require('../validation/validation')
@@ -20,7 +21,8 @@ const adminJoiSchema = joi.object({
 
 const createNewAdmin = async (req, res) =>{
 const admin = await adminModel.find().where({email: req.body.email})
-if(admin[0]) return res.status(400).json('El email ya existe')
+const user = await userModel.find().where({ email: req.body.email });
+if (user[0] || admin[0]) return res.status(400).json({ error: 'Email already exists' })
 try {
 
     await adminJoiSchema.validateAsync({

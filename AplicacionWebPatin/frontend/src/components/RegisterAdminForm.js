@@ -36,6 +36,9 @@ export const RegisterAdminForm = () => {
         setOpen(prevState => !prevState);
     };
 
+    const handleClickLogin = () => {
+        window.location.assign('/loginpage')
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -55,10 +58,17 @@ export const RegisterAdminForm = () => {
             try {
                 const response = await axios.post('http://localhost:3001/api/admin/registro', values)
                 console.log(response.data)
-                resetForm()
+                if (response.data.email) {
+                    window.alert('Usuario creado, será redirigido a la página de login para ingresar')
+                    resetForm()
+                    handleClickLogin()
+
+                } else {
+                    window.alert('El usuario NO ha sido creado')
+                }
             } catch (error) {
                 console.log(error)
-                setError(error.message)
+                setError('El usuario ya existe')
                 setOpen(prevState => !prevState);
             }
         }
@@ -149,13 +159,13 @@ export const RegisterAdminForm = () => {
                     </Stack>
                 </Box>
                 <Snackbar
-                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                     open={open}
                     onClose={handleClose}
                     autoHideDuration={6000}>
                     <Alert severity="error" variant="filled">{error}</Alert>
                 </Snackbar>
-                <div>{error}</div>
+               
             </div>
 
         </div>

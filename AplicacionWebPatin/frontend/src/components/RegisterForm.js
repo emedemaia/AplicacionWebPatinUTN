@@ -51,7 +51,6 @@ export const RegisterForm = () => {
             name: '',
             lastName: '',
             email: '',
-    
             password: ''
         },
         validationSchema: Yup.object({

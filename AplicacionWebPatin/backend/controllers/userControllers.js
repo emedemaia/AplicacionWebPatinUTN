@@ -24,7 +24,7 @@ const userJoiSchema = joi.object({
 const createNewUser = async (req, res) => {
     const user = await userModel.find().where({ email: req.body.email });
     const admin = await adminModel.find().where({ email: req.body.email });
-    if (user[0] || admin[0]) return res.status(400).json({ error: 'Email already exist' })
+    if (user[0] || admin[0]) return res.status(400).json({ error: 'Email already exists' })
 
     try {
 
