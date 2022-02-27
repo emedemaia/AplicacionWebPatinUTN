@@ -136,7 +136,7 @@ export const UserHome = () => {
                     </Drawer>
                     <Routes>
                         <Route exact path="/" element={<LoggedHome />} />
-                        <Route exact path='/datospersonales' element={<PersonalDataPage />} />
+                        <Route exact path='/datospersonales/*' element={<PersonalDataPage />} />
                         <Route exact path="/reservaturno" element='Reservá tu turno' />
                         <Route exact path="/reservahecha" element='Reservas hechas' />
                         <Route exact path="/subifoto" element='Subí tu foto' />

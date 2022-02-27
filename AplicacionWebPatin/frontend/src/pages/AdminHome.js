@@ -130,11 +130,11 @@ export const AdminHome = () => {
           </Drawer>
           <Routes>
             <Route exact path="/" element={<LoggedHome />} />
-            <Route exact path='/datospersonales' element={<PersonalDataPage />} />
+            <Route exact path='/datospersonales/*' element={<PersonalDataPage />} />
             <Route exact path="/reservashechas" element='Reservas hechas' />
             <Route exact path="/adminfotos" element='Administrador de fotos' />
             <Route exact path="/novedades" element='Novedades' />
-            <Route  path='/getallusers/*' element={<GetAllUsersPage />} />
+            <Route exact path='/getallusers/*' element={<GetAllUsersPage />} />
            
           </Routes>
 

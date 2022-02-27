@@ -1,5 +1,5 @@
 const express = require('express')
-const {  createNewUser, updateUser,  loginUserAdmin, getUserById, deleteUser} = require('../controllers/userControllers')
+const {  createNewUser, updateUser,  loginUserAdmin, getUserById, deleteUser, updatePassword, createNewPassword} = require('../controllers/userControllers')
 const { userVerifyToken } = require('../validation/validation')
 
 const userRoutes = express.Router()
@@ -11,7 +11,11 @@ userRoutes.get('/userbyid/:id',  getUserById)
 
 userRoutes.post('/registro', createNewUser)
 
-userRoutes.put('/updateUser/:id', updateUser)
+userRoutes.put('/updateUser/:id', userVerifyToken, updateUser)
+
+userRoutes.post('/createPassword', userVerifyToken,  createNewPassword)
+
+userRoutes.put('/updatePassword/:id', userVerifyToken, updatePassword)
 
 userRoutes.post('/login', loginUserAdmin)
 

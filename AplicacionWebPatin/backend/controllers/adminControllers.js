@@ -86,6 +86,46 @@ const updateAdmin = async (req, res) => {
     }
 }
 
+
+const createNewPassword = async (req, res) => {
+    
+    const admin = await adminModel.find().where({ email: req.body.email })
+
+    console.log('usuario encontrado',admin)
+  
+    if (admin[0]) {
+        const hashPassword = admin[0].password
+        const compare = await bcryptjs.compare(req.body.oldpassword, hashPassword)
+
+        if (compare) {
+            const newpassword = await bcryptjs.hash(req.body.newpassword, 10);
+        
+         res.json({password: newpassword})
+
+        } else {
+
+            res.send('Las contraseñas no coinciden')
+        }
+    }else{
+        console.log('usuario no encontrado del else')
+    }
+
+}
+
+const updatePassword = async (req, res) => {
+
+    try {
+        const passwordUpdate = await adminModel.findByIdAndUpdate(req.params.id, req.body)
+           
+        res.json(passwordUpdate)
+
+    } catch (error) {
+        res.status(404).send({ error: 'contraseña no pudo ser modificada' })
+    }
+
+    
+}
+
 const deleteAdmin = async (req, res) => {
     try {
         const admin = await adminModel.findByIdAndDelete(req.params.id)
@@ -95,30 +135,6 @@ const deleteAdmin = async (req, res) => {
     }
 }
 
-//Login
-// const loginAdmin = async (req, res) => {
-//     const admin = await adminModel.find().where({ email: req.body.email })
-//     if (admin[0]) {
-//         const hashPassword = admin[0].password
-//         const compare = await bcryptjs.compare(req.body.password, hashPassword)
-//         if (compare) {
-//             const adminData = {
-//                 name: admin[0].name,
-//                 lastName: admin[0].lastName,
-//                 admin: admin[0].admin,
-//                 email: admin[0].email
-//             }
-//             const adminAccessToken = await adminGenerateAccessToken(adminData)
-//             res.json({ status: 'ok', Token: adminAccessToken })
-//         } else {
-            
-//             res.json({ status: 'el email y/o contraseña son incorrectos' })
-//         }
-//     } else {
-//         res.json({ error: 'el email y/o contraseña son incorrectos' })
-//     }
-
-// }
 
 const homeAdmin = (req, res) =>{
     
@@ -131,4 +147,4 @@ const homeAdmin = (req, res) =>{
     
 }
 
-module.exports = { createNewAdmin, updateAdmin, deleteAdmin, getAllAdmins, homeAdmin, getAdminById }
+module.exports = { createNewAdmin, updateAdmin, deleteAdmin, getAllAdmins, homeAdmin, getAdminById, updatePassword, createNewPassword }

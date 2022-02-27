@@ -17,7 +17,7 @@ export const PersonalDataForm = () => {
 
     const userValuesObj = JSON.parse(userValues)
 
-    const [exito, setExito] = useState('')
+
     const [error, setError] = useState('')
 
     const handleClickAdmin = async () => {
@@ -35,9 +35,7 @@ export const PersonalDataForm = () => {
         
     }
 
-    const handleClickVolver = () => {
-      window.location.assign('/')
-    }
+ 
 
     const formik = useFormik({
         initialValues: {
@@ -59,13 +57,13 @@ export const PersonalDataForm = () => {
                     const responseAdmin = await axios.put(`http://localhost:3001/api/admin/updateAdmin/${userValuesObj.id}`, values)
                     console.log('respuesta de axios admin', responseAdmin)
 
-                    setExito('EL usuario ha sido modificado exitosamente')
+                    window.alert('El usuario ha sido modificado exitosamente')
                     handleClickAdmin()
                 } else {
                     const response = await axios.put(`http://localhost:3001/api/users/updateUser/${userValuesObj.id}`, values)
                     console.log('respuesta de axios user', response)
 
-                    setExito('EL usuario ha sido modificado exitosamente')
+                    window.alert('El usuario ha sido modificado exitosamente')
                     handleClick()
 
                 }
@@ -130,10 +128,10 @@ export const PersonalDataForm = () => {
                     />
 
 
-                    <Button variant="contained" style={{ width: '20ch', backgroundColor: '#5D6473' }} size="medium" type="submit">Guardar Cambios</Button>
-                    <Button variant="contained" style={{ width: '20ch', backgroundColor: '#5D6473' }} size="medium" onClick={handleClickVolver}>Volver</Button>
+                    <Button variant="contained" style={{ width: '25ch', backgroundColor: '#F26E50' }} size="medium" type="submit">Guardar Cambios</Button>
+                
                     <Typography variant="caption">
-                        {exito}
+                 
                         {error}
                     </Typography>
                 </Stack>

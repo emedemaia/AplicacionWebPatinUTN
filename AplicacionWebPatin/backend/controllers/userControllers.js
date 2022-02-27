@@ -92,6 +92,45 @@ const updateUser = async (req, res) => {
     }
 }
 
+const createNewPassword = async (req, res) => {
+    
+    const user = await userModel.find().where({ email: req.body.email })
+
+    console.log('usuario encontrado',user)
+  
+    if (user[0]) {
+        const hashPassword = user[0].password
+        const compare = await bcryptjs.compare(req.body.oldpassword, hashPassword)
+
+        if (compare) {
+            const newpassword = await bcryptjs.hash(req.body.newpassword, 10);
+        
+         res.json({password: newpassword})
+
+        } else {
+
+            res.send('Las contraseñas no coinciden')
+        }
+    }else{
+        console.log('usuario no encontrado del else')
+    }
+
+}
+
+const updatePassword = async (req, res) => {
+
+    try {
+        const passwordUpdate = await userModel.findByIdAndUpdate(req.params.id, req.body)
+           
+        res.json(passwordUpdate)
+
+    } catch (error) {
+        res.status(404).send({ error: 'contraseña no pudo ser modificada' })
+    }
+
+    
+}
+
 const deleteUser = async (req, res) => {
     try {
         const user = await userModel.findByIdAndDelete(req.params.id)
@@ -152,4 +191,4 @@ const loginUserAdmin = async (req, res) => {
 }
 
 
-module.exports = { createNewUser, getAllUsers, updateUser, deleteUser, loginUserAdmin, getUserById }
+module.exports = { createNewUser, getAllUsers, updateUser, deleteUser, loginUserAdmin, getUserById, updatePassword, createNewPassword }

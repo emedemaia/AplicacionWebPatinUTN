@@ -55,6 +55,7 @@ export const GetAllUsers = () => {
   const handleClickClean = () => {
     window.location.assign('/getallusers')
   }
+  
   console.log('Ésta es la lista de usuarios', userList)
 
   const formik = useFormik({
