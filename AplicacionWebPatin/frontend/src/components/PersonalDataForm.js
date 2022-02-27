@@ -103,6 +103,7 @@ export const PersonalDataForm = () => {
                         onChange={formik.handleChange}
                         error={formik.touched.name && Boolean(formik.errors.name)}
                         helperText={formik.touched.name && formik.errors.name}
+                        inputRef
                     />
                     <TextField
                         required

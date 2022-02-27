@@ -26,7 +26,9 @@ export const LoginForm = () => {
     const [error, setError] = useState('')
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate()
+  
 
+   
     function handleClick() {
         navigate('/')
     }
@@ -98,7 +100,9 @@ export const LoginForm = () => {
                             onChange={formik.handleChange}
                             error={formik.touched.email && Boolean(formik.errors.email)}
                             helperText={formik.touched.email && formik.errors.email}
+                            autoFocus
                         />
+                    
 
                         <FormControl sx={{ m: 1, width: '40ch' }} variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>

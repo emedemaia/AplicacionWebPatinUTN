@@ -111,6 +111,7 @@ export const RegisterForm = () => {
                             onChange={formik.handleChange}
                             error={formik.touched.name && Boolean(formik.errors.name)}
                             helperText={formik.touched.name && formik.errors.name}
+                            autoFocus
                         />
                         <TextField
                             required
