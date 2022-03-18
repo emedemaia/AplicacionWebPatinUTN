@@ -4,6 +4,7 @@ const joi = require('joi')
 const bcryptjs = require('bcryptjs')
 const { userGenerateAccessToken } = require('../validation/validation')
 const { adminGenerateAccessToken } = require('../validation/validation')
+const { findById } = require('../Models/userModel')
 require('dotenv').config
 
 
@@ -42,7 +43,13 @@ const createNewUser = async (req, res) => {
             lastName: req.body.lastName,
             email: req.body.email,
             vip: req.body.vip,
-            password: password
+            password: password,
+            avatar: {
+                path: 'avatar/Avatar0.png',
+                filename: 'Avatar0.png',
+                contentType: 'image/png'
+            }
+
         }
         const newUser = new userModel(data)
         newUser.save().then(response => {
@@ -71,15 +78,15 @@ const getAllUsers = (req, res) => {
     })
 }
 
-const getUserById =  (req, res) => {
-    
-   userModel.findById(req.params.id).then(response => {
+const getUserById = (req, res) => {
+
+    userModel.findById(req.params.id).then(response => {
         res.send(response)
         console.log(response, 'del backend')
-    }).catch(error =>{
+    }).catch(error => {
         console.log(error)
     })
-    
+
 }
 
 
@@ -93,25 +100,25 @@ const updateUser = async (req, res) => {
 }
 
 const createNewPassword = async (req, res) => {
-    
+
     const user = await userModel.find().where({ email: req.body.email })
 
-    console.log('usuario encontrado',user)
-  
+    console.log('usuario encontrado', user)
+
     if (user[0]) {
         const hashPassword = user[0].password
         const compare = await bcryptjs.compare(req.body.oldpassword, hashPassword)
 
         if (compare) {
             const newpassword = await bcryptjs.hash(req.body.newpassword, 10);
-        
-         res.json({password: newpassword})
+
+            res.json({ password: newpassword })
 
         } else {
 
             res.send('Las contraseñas no coinciden')
         }
-    }else{
+    } else {
         console.log('usuario no encontrado del else')
     }
 
@@ -121,21 +128,21 @@ const updatePassword = async (req, res) => {
 
     try {
         const passwordUpdate = await userModel.findByIdAndUpdate(req.params.id, req.body)
-           
+
         res.json(passwordUpdate)
 
     } catch (error) {
         res.status(404).send({ error: 'contraseña no pudo ser modificada' })
     }
 
-    
+
 }
 
 const deleteUser = async (req, res) => {
     try {
         const user = await userModel.findByIdAndDelete(req.params.id)
         res.send({ message: `El usuario ${user} ha sido eliminado` })
-        
+
     } catch (error) {
         res.status(404).send({ error: 'Usuario no encontrado' })
     }
@@ -158,7 +165,7 @@ const loginUserAdmin = async (req, res) => {
             }
             const accessToken = await userGenerateAccessToken(userData)
             res.json({ status: 'ok', Token: accessToken, dataDelUsuario: userData })
-         
+
         } else {
 
             res.json({ status: 'el email y/o contraseña son incorrectos' })
@@ -191,4 +198,16 @@ const loginUserAdmin = async (req, res) => {
 }
 
 
-module.exports = { createNewUser, getAllUsers, updateUser, deleteUser, loginUserAdmin, getUserById, updatePassword, createNewPassword }
+const getAvatarFromId = async (req, res, next) => {
+    try {
+        const user = await userModel.findById(req.params.id)
+
+        res.json(user)
+
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+module.exports = { createNewUser, getAllUsers, updateUser, deleteUser, loginUserAdmin, getUserById, updatePassword, createNewPassword, getAvatarFromId }

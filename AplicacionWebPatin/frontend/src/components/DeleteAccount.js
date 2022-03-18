@@ -40,7 +40,7 @@ export const DeleteAccount = () => {
     }
 
     return (
-        <div  style={{textAlign:'center'}}>
+        <div >
             <Button onClick={handleClick}>Eliminar cuenta</Button>
         </div>
     )

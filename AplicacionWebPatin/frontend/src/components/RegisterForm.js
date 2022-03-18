@@ -12,19 +12,19 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import {  Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
 import { Route, Routes } from 'react-router-dom';
-import {LoginPage} from '../pages/LoginPage'
+import { LoginPage } from '../pages/LoginPage'
 
 export const RegisterForm = () => {
 
     const [open, setOpen] = React.useState(false);
     const [error, setError] = useState('')
     const [showPassword, setShowPassword] = useState(false);
-    
+
 
     const handleClickShowPassword = () => {
         setShowPassword((prevValue) => !prevValue);
@@ -38,7 +38,7 @@ export const RegisterForm = () => {
         setOpen(prevState => !prevState);
     };
 
-  
+
 
     const handleClickLogin = () => {
         window.location.assign('/loginpage')
@@ -57,7 +57,7 @@ export const RegisterForm = () => {
             name: Yup.string('Ingrese su nombre').min(2, 'El nombre debe tener un mínmo de 2 caracteres').required('Su nombre es requerido'),
             lastName: Yup.string('Ingrese su apellido').min(2, 'El apellido debe tener un mínmo de 2 caracteres').required('Su apellido es requerido'),
             email: Yup.string('Ingrese su email').email('Ingrese un email válido').required('El email es requerido'),
-            vip:Yup.string(),
+            vip: Yup.string(),
             password: Yup.string('Ingrese su contraseña').matches(new RegExp('^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*]){6,}'), 'La contraseña debe tener un mínmo de 6 entre letras mayúsculas y minúsculas, números y caracteres especiales (!@#$%^&*)').min(6, 'La contraseña debe tener un mínmo de 6 caracteres').required('La contraseña es requerida')
         }),
 
@@ -135,12 +135,12 @@ export const RegisterForm = () => {
                             error={formik.touched.email && Boolean(formik.errors.email)}
                             helperText={formik.touched.email && formik.errors.email}
                         />
-                         <input
+                        <input
                             label="vip"
                             name="vip"
                             type="hidden"
                         />
-                       
+                      
                         <FormControl sx={{ m: 1, width: '40ch' }} variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
                             <OutlinedInput

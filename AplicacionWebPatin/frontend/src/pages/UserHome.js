@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +12,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { BrowserRouter, Link, Routes, Route, Navigate } from "react-router-dom";
-import { LoginContext, StorageContext } from "../helpers/Context";
+import { ChangeAvatarContext, LoginContext, StorageContext } from "../helpers/Context";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
@@ -22,8 +22,10 @@ import { AdminHome } from './AdminHome';
 import { LoggedHome } from './LoggedHome';
 import { PersonalDataPage } from './PersonalDataPage';
 import { Button } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
 import { VipPage } from './VipPage';
 import { AccesoNoAutorizado } from './AccesoNoAutorizado';
+import axios from 'axios';
 
 
 
@@ -46,21 +48,56 @@ export const UserHome = () => {
     const { userValues } = useContext(StorageContext)
 
     const userValuesObj = JSON.parse(userValues)
-    
+
 
     const tipoDeSuscripcion = userValuesObj.vip
 
     const PrivateRoute = ({ children }) => {
-        
-      return (
-          tipoDeSuscripcion === 'true' ? children :  <Navigate to="/accesonoauto" /> 
-            )
+
+        return (
+            tipoDeSuscripcion === 'true' ? children : <Navigate to="/accesonoauto" />
+        )
     }
 
-    
+
+
+    const avatarImage = async () => {
+        try {
+
+
+            const response = await axios({
+                method: "get",
+                url: `http://localhost:3001/api/users/getAvatar/${userValuesObj.id}`,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+            console.log('avatar response', response.data.avatar)
+
+
+
+            var insertAvatar = document.getElementById('avatar');
+            var att = document.createAttribute('src');
+            att.value = `avatar/${userValuesObj.id}/` + response.data.avatar.filename;
+            insertAvatar.setAttributeNode(att);
+
+
+
+
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
+
+    useEffect(() => {
+        avatarImage()
+    })
+
+
+
 
     return (
-        <div>
+        <div >
 
             <Box sx={{ display: 'block', width: `calc(100% - ${drawerWidth}px)`, mr: `${drawerWidth}px`, p: 3, marginTop: 6 }}>
                 <BrowserRouter>
@@ -95,8 +132,12 @@ export const UserHome = () => {
                         variant="permanent"
                         anchor="right"
                     >
-                        {/* foto */}
-                        <Toolbar />
+
+                        <Toolbar>
+                            <Avatar>
+                                <img alt="Avatar" id="avatar" width={50} />
+                            </Avatar>
+                        </Toolbar>
                         <Divider />
 
                         <List>
@@ -135,18 +176,22 @@ export const UserHome = () => {
 
                     </Drawer>
                     <Routes>
-                        <Route exact path="/" element={<LoggedHome />} />
-                        <Route exact path='/datospersonales/*' element={<PersonalDataPage />} />
-                        <Route exact path="/reservaturno" element='Reservá tu turno' />
-                        <Route exact path="/reservahecha" element='Reservas hechas' />
-                        <Route exact path="/subifoto" element='Subí tu foto' />
-                        <Route exact path="/sectorvip" element={
+                        <Route  path="/*" element={<LoggedHome />} />
+
+                        <Route  path='/datospersonales/*' element={
+                            <PersonalDataPage />
+                        } />
+
+                        <Route  path="/reservaturno/*" element='Reservá tu turno' />
+                        <Route  path="/reservahecha/*" element='Reservas hechas' />
+                        <Route  path="/subifoto/*" element='Subí tu foto' />
+                        <Route  path="/sectorvip/*" element={
                             <PrivateRoute>
                                 <VipPage />
                             </PrivateRoute>
                         } />
                         <Route path="/adminhome/*" element={<AdminHome />} />
-                        <Route path="/accesonoauto" element={<AccesoNoAutorizado />} />
+                        <Route path="/accesonoauto/*" element={<AccesoNoAutorizado />} />
                     </Routes>
                 </BrowserRouter>
             </Box>

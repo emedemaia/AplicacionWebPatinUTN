@@ -13,20 +13,32 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    vip:{
+    vip: {
         type: String,
         default: 'false'
-      
+
     },
     password: {
         type: String,
         required: true
     },
-    
+    avatar: { 
+      
+        path: String, 
+        filename: String,
+        contentType: String,
+      
+      
+    } ,
+    // imagenes: { 
+    //     data: Buffer, 
+    //     contentType: String,
+       
+    // }
 },
-{
-    timestamps: true,
-  }
+    {
+        timestamps: true,
+    }
 )
 
 
