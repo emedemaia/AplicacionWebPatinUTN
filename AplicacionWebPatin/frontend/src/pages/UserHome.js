@@ -26,6 +26,7 @@ import Avatar from '@mui/material/Avatar';
 import { VipPage } from './VipPage';
 import { AccesoNoAutorizado } from './AccesoNoAutorizado';
 import axios from 'axios';
+import { ReservaTurnoPage } from './ReservaTurnoPage';
 
 
 
@@ -182,7 +183,7 @@ export const UserHome = () => {
                             <PersonalDataPage />
                         } />
 
-                        <Route  path="/reservaturno/*" element='Reservá tu turno' />
+                        <Route  path="/reservaturno/*" element={<ReservaTurnoPage/>} />
                         <Route  path="/reservahecha/*" element='Reservas hechas' />
                         <Route  path="/subifoto/*" element='Subí tu foto' />
                         <Route  path="/sectorvip/*" element={

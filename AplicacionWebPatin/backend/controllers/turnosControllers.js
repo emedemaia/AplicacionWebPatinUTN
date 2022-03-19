@@ -1,25 +1,39 @@
 const turnosModel = require('../Models/turnosModel')
 const userModel = require('../Models/userModel')
 
-const createTurno = async (req, res) => {
+const createTurno = async (req, res ) => {
 
-    const user = await userModel.find().where({ email: req.body.email })
+    const user = await userModel.findById(req.params.id)
+console.log(user)
 
-    if (user[0]) {
+   try{
 
-        const nombre = user[0].name
-        const apellido = user[0].lastName
+        const nombre = user.name
+        const apellido = user.lastName
+        const email = user.email
 
-        const newTurno = new turnosModel(req.body)
+        const data = {
+            email: email,
+            date: req.body.date,
+            time: req.body.time
+        }
+
+        console.log('user', data)
+
+        const newTurno = new turnosModel(data)
 
         newTurno.save().then(response => {
-            res.send({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.hour} ` })
+
+          console.log({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time} ` })
+          
+           res.json({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time}hs. ` })
+
         }).catch(error => {
             console.log(error)
-            res.send({ error: 'No se pudo crear el turno' })
+            res.json({ error: 'No se pudo crear el turno' })
         })
-    } else {
-        res.send({ message: 'usuario no encontrado' })
+    } catch(error) {
+        console.log(error)
     }
 }
 
@@ -53,15 +67,15 @@ const getAllTurnos = (req, res) => {
 }
 
 const deleteTurnoById = async (req, res) => {
-try {
-    await turnosModel.findByIdAndDelete(req.params.id)
-    res.send('Turno eliminado correctamente')
-} catch (error) {
-    res.send('No se ha podido eliminar el turno, intente nuevamente')
-}
+    try {
+        await turnosModel.findByIdAndDelete(req.params.id)
+        res.send('Turno eliminado correctamente')
+    } catch (error) {
+        res.send('No se ha podido eliminar el turno, intente nuevamente')
+    }
 }
 
-const updateTurnoById = async (req, res) =>{
+const updateTurnoById = async (req, res) => {
     try {
         await turnosModel.findByIdAndUpdate(req.params.id, req.body)
         res.send('Su turno ha sido modificado correctamente')

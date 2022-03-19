@@ -7,17 +7,14 @@ const turnosSchema = new mongoose.Schema(
             required: true
         },
         date: {
-            type: String,
+            type: Date,
             required: true
         },
-        hour: {
-            type: String,
+        time: {
+            type: Number,
             required: true
         },
-        password: {
-            type: String,
-            required: true
-        }
+      
     },
     {
         timestamps: true,

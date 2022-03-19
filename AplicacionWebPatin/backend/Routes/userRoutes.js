@@ -60,7 +60,7 @@ userRoutes.post('/createAvatar/:id', upload.single('avatar'), async (req, res, n
     try {
 
 
-        var obj = {
+        let obj = {
 
             avatar: {
                 path: req.file.path,

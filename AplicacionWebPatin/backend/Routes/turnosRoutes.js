@@ -4,7 +4,7 @@ const turnosRoutes = express.Router()
 
 turnosRoutes.get('/', getAllTurnos)
 
-turnosRoutes.post('/crearTurno', createTurno)
+turnosRoutes.post('/crearTurno/:id', createTurno)
 
 turnosRoutes.get('/turnosUsuario', getTurnosByEmail)
 

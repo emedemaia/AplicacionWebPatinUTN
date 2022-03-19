@@ -22,7 +22,7 @@ export const LoggedHome = () => {
 
         <Saludo />
         <div  style={{ display:'flex', justifyContent:'center'}}>
-        {/* <ImageList
+        <ImageList
       sx={{ width: 500, height: 450 }}
       variant="quilted"
       cols={4}
@@ -39,7 +39,7 @@ export const LoggedHome = () => {
           />
         </ImageListItem>
       ))}
-    </ImageList> */}
+    </ImageList>
     </div>
         </div>
   )
