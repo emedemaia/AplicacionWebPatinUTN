@@ -21,7 +21,7 @@ export const DeleteAccount = () => {
 
 
 
-        if (window.confirm('eliminar?')) {
+        if (window.confirm('¿Estas segurx de que deseas eliminar tu cuenta?\nEsta acción no se puede deshacer, perderás todos tus datos y fotos.')) {
             axios.delete(`http://localhost:3001/api/users/deleteuser/${userValuesObj.id}`,
                 { headers: { authorization: localStorage.getItem('isAuthenticated') } }
             )

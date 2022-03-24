@@ -6,7 +6,7 @@ turnosRoutes.get('/', getAllTurnos)
 
 turnosRoutes.post('/crearTurno/:id', createTurno)
 
-turnosRoutes.get('/turnosUsuario', getTurnosByEmail)
+turnosRoutes.get('/turnosUsuario/:id', getTurnosByEmail)
 
 turnosRoutes.delete('/eliminarTurno/:id', deleteTurnoById)
 

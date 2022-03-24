@@ -14,6 +14,10 @@ const turnosSchema = new mongoose.Schema(
             type: Number,
             required: true
         },
+        people: {
+            type: Number,
+            required: true
+        },
       
     },
     {

@@ -1,48 +1,117 @@
 const turnosModel = require('../Models/turnosModel')
 const userModel = require('../Models/userModel')
 
-const createTurno = async (req, res ) => {
+const createTurno = async (req, res) => {
 
     const user = await userModel.findById(req.params.id)
-console.log(user)
+    console.log(user)
 
-   try{
+    const turnoExists = await turnosModel.find().where({ email: user.email, date: req.body.date, time: req.body.time })
 
-        const nombre = user.name
-        const apellido = user.lastName
-        const email = user.email
+    console.log(turnoExists)
+    if (turnoExists[0]) {
+        res.json({ error: 'ya tiene un turno asignado para esa fecha y hora, elija otra fecha y hora' })
+    } else {
 
-        const data = {
-            email: email,
-            date: req.body.date,
-            time: req.body.time
+        const capacidadMax = await turnosModel.find().where({ date: req.body.date, time: req.body.time })
+        const peopleInput = req.body.people
+
+        console.log('capmax', capacidadMax)
+
+        if (capacidadMax != "") {
+
+            for (const element of capacidadMax) {
+                const elementPeople = element.people
+
+                if (elementPeople + peopleInput > 200) {
+
+                    res.json({ error: 'No quedan turnos disponibles para esa hora' })
+
+                } else {
+
+
+
+                    try {
+
+                        const nombre = user.name
+                        const apellido = user.lastName
+                        const email = user.email
+
+                        const data = {
+                            email: email,
+                            date: req.body.date,
+                            time: req.body.time,
+                            people: req.body.people
+                        }
+
+                        console.log('user', data)
+
+                        const newTurno = new turnosModel(data)
+
+                        newTurno.save().then(response => {
+
+                            console.log({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time}hs, para ${req.body.people} persona/s ` })
+
+                            res.json({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time}hs., para ${req.body.people} persona/s ` })
+
+                        }).catch(error => {
+                            console.log(error)
+                            res.json({ error: 'No se pudo crear el turno' })
+                        })
+                    } catch (error) {
+                        console.log(error)
+                   }
+                }
+            } 
+         }else {
+                    try {
+
+                        const nombre = user.name
+                        const apellido = user.lastName
+                        const email = user.email
+
+                        const data = {
+                            email: email,
+                            date: req.body.date,
+                            time: req.body.time,
+                            people: req.body.people
+                        }
+
+                        console.log('user', data)
+
+                        const newTurno = new turnosModel(data)
+
+                        newTurno.save().then(response => {
+
+                            console.log({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time}hs, para ${req.body.people} persona/s ` })
+
+                            res.json({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time}hs., para ${req.body.people} persona/s ` })
+
+                        }).catch(error => {
+                            console.log(error)
+                            res.json({ error: 'No se pudo crear el turno' })
+                        })
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+
+            }
+
+
+
+       
         }
+    
 
-        console.log('user', data)
-
-        const newTurno = new turnosModel(data)
-
-        newTurno.save().then(response => {
-
-          console.log({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time} ` })
-          
-           res.json({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time}hs. ` })
-
-        }).catch(error => {
-            console.log(error)
-            res.json({ error: 'No se pudo crear el turno' })
-        })
-    } catch(error) {
-        console.log(error)
-    }
-}
 
 const getTurnosByEmail = async (req, res) => {
     try {
-        const user = await userModel.find().where({ email: req.body.email })
+        const user = await userModel.findById(req.params.id)
+       
 
         if (user[0]) {
-            const turno = await turnosModel.find().where({ email: req.body.email })
+            const turno = await turnosModel.find().where({ email: user[0].email })
             if (turno[0]) {
                 res.send({ message: `${user[0].name} ${user[0].lastName} posee el o los siguientes turnos:`, turno })
             } else {

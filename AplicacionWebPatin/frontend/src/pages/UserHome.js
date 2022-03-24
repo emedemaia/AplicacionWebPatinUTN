@@ -27,6 +27,7 @@ import { VipPage } from './VipPage';
 import { AccesoNoAutorizado } from './AccesoNoAutorizado';
 import axios from 'axios';
 import { ReservaTurnoPage } from './ReservaTurnoPage';
+import { TurnosPage } from './TurnosPage';
 
 
 
@@ -184,7 +185,7 @@ export const UserHome = () => {
                         } />
 
                         <Route  path="/reservaturno/*" element={<ReservaTurnoPage/>} />
-                        <Route  path="/reservahecha/*" element='Reservas hechas' />
+                        <Route  path="/reservahecha/*" element={<TurnosPage />} />
                         <Route  path="/subifoto/*" element='Subí tu foto' />
                         <Route  path="/sectorvip/*" element={
                             <PrivateRoute>
