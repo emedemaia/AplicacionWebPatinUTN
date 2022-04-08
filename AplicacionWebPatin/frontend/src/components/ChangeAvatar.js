@@ -1,8 +1,8 @@
 import { Button, Stack, Typography } from '@mui/material'
-import React, { useContext, useState, useRef } from 'react'
+import React, { useContext, useState} from 'react'
 import { StorageContext } from "../helpers/Context";
 import axios from 'axios';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { PersonalDataPage } from '../pages/PersonalDataPage';
 
 
@@ -41,9 +41,7 @@ export const ChangeAvatar = () => {
 
     };
 
-    const navigate = useNavigate()
-
-    const inputRef = useRef()
+   
 
     const HandleSumbit =  (event) => {
 

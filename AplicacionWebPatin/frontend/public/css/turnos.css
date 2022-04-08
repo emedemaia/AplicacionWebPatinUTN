@@ -1,0 +1,11 @@
+.deleteIcon{
+    color: red;
+}
+
+.deleteIcon:hover{
+    color:rgb(242, 164, 90);
+}
+
+.deleteIcon:active{
+    color: darkred
+}

@@ -60,60 +60,62 @@ const createTurno = async (req, res) => {
                         })
                     } catch (error) {
                         console.log(error)
-                   }
-                }
-            } 
-         }else {
-                    try {
-
-                        const nombre = user.name
-                        const apellido = user.lastName
-                        const email = user.email
-
-                        const data = {
-                            email: email,
-                            date: req.body.date,
-                            time: req.body.time,
-                            people: req.body.people
-                        }
-
-                        console.log('user', data)
-
-                        const newTurno = new turnosModel(data)
-
-                        newTurno.save().then(response => {
-
-                            console.log({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time}hs, para ${req.body.people} persona/s ` })
-
-                            res.json({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time}hs., para ${req.body.people} persona/s ` })
-
-                        }).catch(error => {
-                            console.log(error)
-                            res.json({ error: 'No se pudo crear el turno' })
-                        })
-                    } catch (error) {
-                        console.log(error)
                     }
                 }
-
             }
+        } else {
+            try {
 
+                const nombre = user.name
+                const apellido = user.lastName
+                const email = user.email
 
+                const data = {
+                    email: email,
+                    date: req.body.date,
+                    time: req.body.time,
+                    people: req.body.people
+                }
 
-       
+                console.log('user', data)
+
+                const newTurno = new turnosModel(data)
+
+                newTurno.save().then(response => {
+
+                    console.log({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time}hs, para ${req.body.people} persona/s ` })
+
+                    res.json({ message: `Turno creado para ${nombre} ${apellido} para el día ${req.body.date} a las ${req.body.time}hs., para ${req.body.people} persona/s ` })
+
+                }).catch(error => {
+                    console.log(error)
+                    res.json({ error: 'No se pudo crear el turno' })
+                })
+            } catch (error) {
+                console.log(error)
+            }
         }
-    
+
+    }
+
+
+
+
+}
+
 
 
 const getTurnosByEmail = async (req, res) => {
+
     try {
         const user = await userModel.findById(req.params.id)
-       
 
-        if (user[0]) {
-            const turno = await turnosModel.find().where({ email: user[0].email })
-            if (turno[0]) {
-                res.send({ message: `${user[0].name} ${user[0].lastName} posee el o los siguientes turnos:`, turno })
+        if (user) {
+            const turno = await turnosModel.find().where({ email: user.email })
+
+            if (turno) {
+                res.send(turno)
+                // res.send({ message: `${user[0].name} ${user[0].lastName} posee el o los siguientes turnos:`, turno })
             } else {
                 res.send('El usuario no posee turnos')
             }
@@ -127,6 +129,7 @@ const getTurnosByEmail = async (req, res) => {
 }
 
 
+
 const getAllTurnos = (req, res) => {
     turnosModel.find().then(response => {
         res.send(response)
@@ -137,7 +140,8 @@ const getAllTurnos = (req, res) => {
 
 const deleteTurnoById = async (req, res) => {
     try {
-        await turnosModel.findByIdAndDelete(req.params.id)
+       const response = await turnosModel.findByIdAndDelete(req.params.id)
+       console.log('response back',response)
         res.send('Turno eliminado correctamente')
     } catch (error) {
         res.send('No se ha podido eliminar el turno, intente nuevamente')

@@ -32,10 +32,10 @@ export const ReservaTurnoForm = () => {
                 const response = await axios.post(`http://localhost:3001/api/turnos/crearTurno/${userValuesObj.id}`, values)
 console.log(response)
                 if (response.data.error ) {
-                    window.alert(JSON.stringify(response.data.error))
+                    window.alert(response.data.error)
                 } else {
                     resetForm()
-                    window.alert(JSON.stringify(response.data.message))
+                    window.alert(response.data.message)
                 }
                
 
