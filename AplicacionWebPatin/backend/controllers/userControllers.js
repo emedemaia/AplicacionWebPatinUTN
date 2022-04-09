@@ -1,6 +1,7 @@
 const userModel = require('../Models/userModel')//Acá está el modelo del schema que utilizo para crear el usuario
 const adminModel = require('../Models/adminModel')
 const joi = require('joi')
+const fs = require('fs')
 const bcryptjs = require('bcryptjs')
 const { userGenerateAccessToken } = require('../validation/validation')
 const { adminGenerateAccessToken } = require('../validation/validation')
@@ -46,12 +47,13 @@ const createNewUser = async (req, res) => {
             password: password,
             avatar: {
                 path: 'avatar/Avatar0.png',
-                filename: 'Avatar0.png',
-                contentType: 'image/png'
+            filename: 'Avatar0.png',
+            contentType: 'image/png'
             }
 
         }
         const newUser = new userModel(data)
+       
         newUser.save().then(response => {
             res.json(data)
         }).catch(error => {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +12,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { BrowserRouter, Link, Routes, Route, Navigate } from "react-router-dom";
-import { ChangeAvatarContext, LoginContext, StorageContext } from "../helpers/Context";
+import { LoginContext, StorageContext } from "../helpers/Context";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
@@ -78,7 +78,13 @@ export const UserHome = () => {
 
             var insertAvatar = document.getElementById('avatar');
             var att = document.createAttribute('src');
-            att.value = `avatar/${userValuesObj.id}/` + response.data.avatar.filename;
+
+            if (response.data.avatar.filename === "Avatar0.png") {
+                att.value = `avatar/` + response.data.avatar.filename;
+            } else {
+                att.value = `avatar/${userValuesObj.id}/` + response.data.avatar.filename;
+            }
+           
             insertAvatar.setAttributeNode(att);
 
 

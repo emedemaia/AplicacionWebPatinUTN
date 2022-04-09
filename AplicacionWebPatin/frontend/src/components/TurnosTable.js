@@ -12,6 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import IconButton from '@mui/material/IconButton';
+import { Typography } from '@mui/material';
 
 
 export const TurnosTable = () => {
@@ -20,14 +21,22 @@ export const TurnosTable = () => {
   const userValuesObj = JSON.parse(userValues)
 
   const [turnos, setTurnos] = useState([])
+  const [message, setMessage] = useState("")
 
 
   const getTurnos = async () => {
 
     try {
       const response = await axios.get(`http://localhost:3001/api/turnos/turnosUsuario/${userValuesObj.id}`)
+      
+if (response.data.error) {
+setMessage(response.data)
 
-      setTurnos(response.data)
+} else {
+  setTurnos(response.data)
+
+}
+     
 
     } catch (error) {
       console.log(error)
@@ -36,22 +45,25 @@ export const TurnosTable = () => {
 
   useEffect(() => {
     getTurnos()
-  })
+  }, [])
 
-const handleClick = async (id) =>{
 
-  try {
-if( window.confirm('¿Está seguro de que desea eliminar este turno?')){
-  const response = await  axios.delete(`http://localhost:3001/api/turnos/eliminarTurno/${id}`)
 
-window.alert(response.data)
-window.location.assign('reservahecha')
-}
- 
-  } catch (error) {
-    console.log(error)
+
+  const handleClick = async (id) => {
+  
+    try {
+      if (window.confirm('¿Está seguro de que desea eliminar este turno?')) {
+        const response = await axios.delete(`http://localhost:3001/api/turnos/eliminarTurno/${id}`)
+
+        window.alert(response.data)
+        window.location.assign('reservahecha')
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
   }
-}
 
   return (
     <>
@@ -67,34 +79,40 @@ window.location.assign('reservahecha')
             </TableRow>
           </TableHead>
           <TableBody>
-
-            {turnos.map((row) => (
-              <TableRow
-                key={row.id}
-                id={row.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                className="turnoId"
+            {turnos.map((row) => {
+              const fecha = new Date(row.date)
+              fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset())
+              return (
+                <TableRow
+                  key={row.id}
+                  id={row.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  className="turnoId"
                 >
-                <TableCell component="th" scope="row">
-                  {row.id}
-                </TableCell>
-                <TableCell align="right">{row.date}</TableCell>
-                <TableCell align="right">{row.time}:00 hs</TableCell>
-                <TableCell align="right">{row.people}</TableCell>
-                <TableCell align="right">
-<IconButton onClick={() => handleClick(row.id)}> <DeleteForeverIcon className='deleteIcon'/></IconButton>
-               
-                </TableCell>
-              </TableRow>
-            ))}
+                  <TableCell component="th" scope="row">
+                    {row.id}
+                  </TableCell>
+                  <TableCell align="right">{fecha.toLocaleDateString('es-MX')}</TableCell>
+                  <TableCell align="right">{row.time}:00 hs</TableCell>
+                  <TableCell align="right">{row.people}</TableCell>
+                  <TableCell align="right">
+                    <IconButton onClick={() => handleClick(row.id)}> <DeleteForeverIcon className='deleteIcon' /></IconButton>
+
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
-      </TableContainer>
+         </TableContainer>
+         <Typography variant="subtitle2" style={{color: "red", textAlign:"center", marginTop:"20px"}}>{message.error}</Typography>
+
       <Routes>
-      <Route  path="/reservahecha/*" element={<TurnosPage />} />
+        <Route path="/reservahecha/*" element={<TurnosPage />} />
       </Routes>
     </>
   );
+          
 }
 
 // poner que primero deben elegir y luego eliminar, entonces poner un solo tachito de basura? así cuando apretan el checkbox creo un state que guarde el row.id y luego ejecuto ese state en axios para eliminar el turno
