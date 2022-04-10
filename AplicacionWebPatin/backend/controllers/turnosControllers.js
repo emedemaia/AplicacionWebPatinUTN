@@ -12,7 +12,7 @@ const createTurno = async (req, res) => {
 
     console.log(turnoExists)
     if (turnoExists[0]) {
-        res.json({ error: 'ya tiene un turno asignado para esa fecha y hora, elija otra fecha y hora' })
+        res.json({ error: 'Ya tiene un turno asignado para esa fecha y hora, elija otra fecha y hora o vaya a la sección reservas hechas en caso de querer modificarlo.' })
     } else {
 
         const capacidadMax = await turnosModel.find().where({ date: req.body.date, time: req.body.time })
@@ -57,10 +57,12 @@ const createTurno = async (req, res) => {
                             fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset())
 
 
-                            console.log({ message: `Turno creado para ${nombre} ${apellido} para el día ${fecha.toLocaleDateString('es-MX')} a las ${req.body.time}hs, para ${req.body.people} persona/s ` })
+                            console.log({ message: `Turno creado para ${nombre} ${apellido} para el día ${fecha.toLocaleDateString('es-MX')} a las ${req.body.time}hs, para ${req.body.people} persona/s.
+                            Número de id del turno: ${response.id} ` })
 
 
-                            res.json({ message: `Turno creado para ${nombre} ${apellido} para el día ${fecha.toLocaleDateString('es-MX')} a las ${req.body.time}hs., para ${req.body.people} persona/s ` })
+                            res.json({ message: `Turno creado para ${nombre} ${apellido} para el día ${fecha.toLocaleDateString('es-MX')} a las ${req.body.time}hs., para ${req.body.people} persona/s.
+                            \nNúmero de id del turno: ${response.id} ` })
 
 
                         }).catch(error => {
@@ -142,7 +144,7 @@ const createTurno = async (req, res) => {
                     const fecha = new Date(req.body.date)
                     fecha.setMinutes(fecha.getMinutes() + fecha.getTimezoneOffset())
 
-                    console.log({ message: `Turno creado para ${nombre} ${apellido} para el día ${fecha.toLocaleDateString('es-MX')} a las ${req.body.time}hs, para ${req.body.people} persona/s.\nNúmero de id del turno: ${response.id} ` })
+                    console.log({ message: `Turno creado para ${nombre} ${apellido} para el día ${fecha.toLocaleDateString('es-MX')} a las ${req.body.time}hs, para ${req.body.people} persona/s. Número de id del turno: ${response.id} ` })
 
                     res.json({ message: `Turno creado para ${nombre} ${apellido} para el día ${fecha.toLocaleDateString('es-MX')} a las ${req.body.time}hs., para ${req.body.people} persona/s\nNúmero de id del turno: ${response.id} ` })
 

@@ -22,7 +22,8 @@ export const ReservaTurnoPage = () => {
    <Typography variant="subtitle2">
    ¿Cómo sacás turno?
    </Typography>
-   <Typography variant='body2'> Seleccioná en el siguiente formulario fecha y hora y listo! se te va a enviar a tu mail un correo con el turno asignado, así que asegurate de ingresar bien el mismo.</Typography>
+   <Typography variant='body2'> Seleccioná en el siguiente formulario fecha y hora y listo! se te va a enviar a tu mail un correo con el turno asignado.  <br/>
+   ¡Importante! los turnos se sacan 24hs antes.</Typography>
   <div style={{marginTop: "60px"}}>
     <ReservaTurnoForm />
   </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { StorageContext } from "../helpers/Context";
 import { useFormik } from 'formik';
 import { Box, Button, FormHelperText, Stack, TextField, Typography } from '@mui/material'
@@ -14,6 +14,11 @@ export const ReservaTurnoForm = () => {
     const { userValues } = useContext(StorageContext)
     const userValuesObj = JSON.parse(userValues)
 
+    const today = new Date()
+    today.toLocaleDateString('es-MX')
+    const dateToday = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
+    
+
 
     const formik = useFormik({
         initialValues: {
@@ -23,7 +28,7 @@ export const ReservaTurnoForm = () => {
         },
 
         validationSchema: Yup.object({
-            date: Yup.date('Elija una fecha').required('Elija una fecha'),
+            date: Yup.date('Elija una fecha').required('Elija una fecha').min(today, 'La reserva tiene que ser una fecha superior a ' + dateToday),
             time: Yup.number('Elija una hora').required('Elija una hora'),
             people: Yup.number('Ingrese cantidad de personas que van a patinar').required('Ingrese cantidad de personas que van a patinar').min(1, 'Mínimo 1 persona').max(200,'Máximo 200 personas')
         }),

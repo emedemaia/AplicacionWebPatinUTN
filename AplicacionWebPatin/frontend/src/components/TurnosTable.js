@@ -12,7 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import IconButton from '@mui/material/IconButton';
-import { Typography } from '@mui/material';
+import { Checkbox, Typography } from '@mui/material';
 
 
 export const TurnosTable = () => {
@@ -22,7 +22,9 @@ export const TurnosTable = () => {
 
   const [turnos, setTurnos] = useState([])
   const [message, setMessage] = useState("")
-
+  const [ids, setIds] = useState([])
+  // const [checked, setChecked] = useState([true, false])
+  const [checked, setChecked] = useState(false)
 
   const getTurnos = async () => {
 
@@ -65,12 +67,51 @@ setMessage(response.data)
     }
   }
 
+  const handleChange = (id) => {
+    // setChecked([checked[0], event.target.checked]);
+    // setChecked(prevState => !prevState)
+    setIds(ids.concat(id))
+    // if(checked === true){
+    //   setIds(ids.concat(id))
+    // }else{
+    //   setIds(ids.filter((item) => item !== id))
+    // }
+  }
+
+  const handleClickAll =  () => {
+
+  try {
+    if (window.confirm('¿Está seguro de que desea eliminar los turnos seleccionados?')) {
+
+      ids.forEach(element => {
+        console.log("element.id", element)
+     axios.delete(`http://localhost:3001/api/turnos/eliminarTurno/${element}`)
+    })
+    window.location.assign('reservahecha')
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const handleChangeAll = () => {
+  // setChecked(true);
+  //USAR USEREF
+  const myCheck = document.getElementsByClassName("myCheckbox")
+  console.log(myCheck)
+  // myCheck.checked = true
+}
+
   return (
     <>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
+            <TableCell padding='checkbox'>
+              {/* <Checkbox size='small' onChange={handleChangeAll}/> */}
+            </TableCell>
               <TableCell>ID</TableCell>
               <TableCell align="right">Fecha</TableCell>
               <TableCell align="right">Hora&nbsp;</TableCell>
@@ -89,6 +130,10 @@ setMessage(response.data)
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   className="turnoId"
                 >
+                <TableCell padding='checkbox'>
+              {/* <Checkbox size='small' onChange={() => handleChange(row.id)} checked={checked}/> */}
+              <Checkbox size='small' onChange={() => handleChange(row.id)} className="myCheckbox"/>
+            </TableCell>
                   <TableCell component="th" scope="row">
                     {row.id}
                   </TableCell>
@@ -102,6 +147,11 @@ setMessage(response.data)
                 </TableRow>
               )
             })}
+            <TableRow>
+                <TableCell align="right">
+                    <IconButton onClick={handleClickAll}> <DeleteForeverIcon className='deleteIcon' /></IconButton>
+                  </TableCell>
+                </TableRow>
           </TableBody>
         </Table>
          </TableContainer>
