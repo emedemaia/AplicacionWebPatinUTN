@@ -16,8 +16,10 @@ import { Stack } from '@mui/material';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
+import { Route, Routes } from 'react-router-dom';
+import { LoginPage } from '../pages/LoginPage'
 
-export const RegisterAdminForm = () => {
+export const RegisterForm = () => {
 
     const [open, setOpen] = React.useState(false);
     const [error, setError] = useState('')
@@ -36,9 +38,13 @@ export const RegisterAdminForm = () => {
         setOpen(prevState => !prevState);
     };
 
+
+
     const handleClickLogin = () => {
-        window.location.assign('/loginpage')
+        window.location.assign('/LoginPage')
     }
+
+
 
     const formik = useFormik({
         initialValues: {
@@ -48,24 +54,28 @@ export const RegisterAdminForm = () => {
             password: ''
         },
         validationSchema: Yup.object({
-            name: Yup.string('Ingrese su nombre').required('Su nombre es requerido'),
-            lastName: Yup.string('Ingrese su apellido').required('Su apellido es requerido'),
+            name: Yup.string('Ingrese su nombre').min(2, 'El nombre debe tener un mínmo de 2 caracteres').required('Su nombre es requerido'),
+            lastName: Yup.string('Ingrese su apellido').min(2, 'El apellido debe tener un mínmo de 2 caracteres').required('Su apellido es requerido'),
             email: Yup.string('Ingrese su email').email('Ingrese un email válido').required('El email es requerido'),
+            vip: Yup.string(),
             password: Yup.string('Ingrese su contraseña').matches(new RegExp('^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*]){6,}'), 'La contraseña debe tener un mínmo de 6 entre letras mayúsculas y minúsculas, números y caracteres especiales (!@#$%^&*)').min(6, 'La contraseña debe tener un mínmo de 6 caracteres').required('La contraseña es requerida')
         }),
 
         onSubmit: async (values, { resetForm }) => {
             try {
-                const response = await axios.post('http://localhost:3001/api/admin/registro', values)
-                console.log(response.data)
+                const response = await axios.post('/api/users/registro', values)
+                console.log('esto es response', response.data)
                 if (response.data.email) {
                     window.alert('Usuario creado, será redirigido a la página de login para ingresar')
                     resetForm()
                     handleClickLogin()
 
+
                 } else {
                     window.alert('El usuario NO ha sido creado')
+
                 }
+
             } catch (error) {
                 console.log(error)
                 setError('El usuario ya existe')
@@ -101,6 +111,7 @@ export const RegisterAdminForm = () => {
                             onChange={formik.handleChange}
                             error={formik.touched.name && Boolean(formik.errors.name)}
                             helperText={formik.touched.name && formik.errors.name}
+                            autoFocus
                         />
                         <TextField
                             required
@@ -124,6 +135,12 @@ export const RegisterAdminForm = () => {
                             error={formik.touched.email && Boolean(formik.errors.email)}
                             helperText={formik.touched.email && formik.errors.email}
                         />
+                        <input
+                            label="vip"
+                            name="vip"
+                            type="hidden"
+                        />
+                      
                         <FormControl sx={{ m: 1, width: '40ch' }} variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
                             <OutlinedInput
@@ -165,9 +182,11 @@ export const RegisterAdminForm = () => {
                     autoHideDuration={6000}>
                     <Alert severity="error" variant="filled">{error}</Alert>
                 </Snackbar>
-               
-            </div>
 
+            </div>
+            <Routes>
+                <Route exact path='/LoginPage' element={<LoginPage />} />
+            </Routes>
         </div>
 
 

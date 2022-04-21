@@ -11,7 +11,7 @@ const fs = require('fs')
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        let ruta = './../frontend/public/avatar/' + req.params.id
+        let ruta = '../../client/public/avatar/' + req.params.id
 
         fs.mkdirSync(ruta, { recursive: true }, (err) => {
             if (err) throw err;

@@ -54,8 +54,8 @@ export const ChangeAvatar = () => {
                 event.preventDefault()
                 const formDataAvatar = new FormData()
                 formDataAvatar.append('avatar', avatarUpload.avatar)
-                 axios.post(`http://localhost:3001/api/users/createAvatar/${userValuesObj.id}`, formDataAvatar).then(_res => {
-                    window.location.assign('datospersonales')
+                 axios.post(`/api/users/createAvatar/${userValuesObj.id}`, formDataAvatar).then(_res => {
+                    window.location.assign('/PersonalDataPage')
                 })
 
 
@@ -78,7 +78,7 @@ export const ChangeAvatar = () => {
                 </Typography>
                 <div style={{ textAlign: 'center' }}>
 
-                    <img width='100' alt='avatar' style={{ borderRadius: '50px' }} src='avatar/avatar0.png' id='uploadPreview' />
+                    <img width='100' alt='avatar' style={{ borderRadius: '50px' }} src='avatar/Avatar0.png' id='uploadPreview' />
 
                 </div>
 
@@ -96,7 +96,7 @@ export const ChangeAvatar = () => {
             </Stack>
 
             <Routes>
-                <Route  path='/datospersonales/*' element={<PersonalDataPage />} />
+                <Route  path='/PersonaDataPage/*' element={<PersonalDataPage />} />
             </Routes>
 
         </div>

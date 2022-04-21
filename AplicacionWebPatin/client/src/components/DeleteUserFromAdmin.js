@@ -8,14 +8,14 @@ export const DeleteUserFromAdmin = () => {
     const { userById } = useContext(UserByIdContext)
 
     const homePage = () => {
-        window.location.assign('/getallusers')
+        window.location.assign('/GetAllUsersPage')
     }
 
     const handleClick = async () => {
 
         if (window.confirm('eliminar?')) {
             try {
-                const response = await axios.delete(`http://localhost:3001/api/admin/deleteuser/${userById.id}`,
+                const response = await axios.delete(`/api/admin/deleteuser/${userById.id}`,
                     { headers: { authorization: localStorage.getItem('isAuthenticated') } }
                 )
                 console.log('response delete', response)

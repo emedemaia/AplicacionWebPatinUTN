@@ -69,7 +69,7 @@ export const UserHome = () => {
 
             const response = await axios({
                 method: "get",
-                url: `http://localhost:3001/api/users/getAvatar/${userValuesObj.id}`,
+                url: `/api/users/getAvatar/${userValuesObj.id}`,
                 headers: { "Content-Type": "multipart/form-data" },
             })
             console.log('avatar response', response.data.avatar)

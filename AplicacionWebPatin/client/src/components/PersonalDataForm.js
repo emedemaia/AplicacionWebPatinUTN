@@ -21,7 +21,7 @@ export const PersonalDataForm = () => {
     const [error, setError] = useState('')
 
     const handleClickAdmin = async () => {
-        const getadminbyid = await axios.get(`http://localhost:3001/api/admin/adminbyid/${userValuesObj.id}`)
+        const getadminbyid = await axios.get(`/api/admin/adminbyid/${userValuesObj.id}`)
         localStorage.setItem('userValues', JSON.stringify(getadminbyid.data))
         console.log('nuevo userValues ', userValues)
         
@@ -29,7 +29,7 @@ export const PersonalDataForm = () => {
 
 
     const handleClick = async () => {
-        const getuserbyid = await axios.get(`http://localhost:3001/api/users/userbyid/${userValuesObj.id}`)
+        const getuserbyid = await axios.get(`/api/users/userbyid/${userValuesObj.id}`)
         localStorage.setItem('userValues', JSON.stringify(getuserbyid.data))
         console.log('nuevo userValues ', userValues)
         
@@ -54,13 +54,13 @@ export const PersonalDataForm = () => {
         onSubmit: async (values) => {
             try {
                 if (userValuesObj.admin) {
-                    const responseAdmin = await axios.put(`http://localhost:3001/api/admin/updateAdmin/${userValuesObj.id}`, values)
+                    const responseAdmin = await axios.put(`/api/admin/updateAdmin/${userValuesObj.id}`, values)
                     console.log('respuesta de axios admin', responseAdmin)
 
                     window.alert('El usuario ha sido modificado exitosamente')
                     handleClickAdmin()
                 } else {
-                    const response = await axios.put(`http://localhost:3001/api/users/updateUser/${userValuesObj.id}`, values)
+                    const response = await axios.put(`/api/users/updateUser/${userValuesObj.id}`, values)
                     console.log('respuesta de axios user', response)
 
                     window.alert('El usuario ha sido modificado exitosamente')

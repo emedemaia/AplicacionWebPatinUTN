@@ -29,7 +29,7 @@ export const TurnosTable = () => {
   const getTurnos = async () => {
 
     try {
-      const response = await axios.get(`http://localhost:3001/api/turnos/turnosUsuario/${userValuesObj.id}`)
+      const response = await axios.get(`/api/turnos/turnosUsuario/${userValuesObj.id}`)
       
 if (response.data.error) {
 setMessage(response.data)
@@ -56,7 +56,7 @@ setMessage(response.data)
   
     try {
       if (window.confirm('¿Está seguro de que desea eliminar este turno?')) {
-        const response = await axios.delete(`http://localhost:3001/api/turnos/eliminarTurno/${id}`)
+        const response = await axios.delete(`/api/turnos/eliminarTurno/${id}`)
 
         window.alert(response.data)
         window.location.assign('reservahecha')
@@ -85,9 +85,9 @@ setMessage(response.data)
 
       ids.forEach(element => {
         console.log("element.id", element)
-     axios.delete(`http://localhost:3001/api/turnos/eliminarTurno/${element}`)
+     axios.delete(`/api/turnos/eliminarTurno/${element}`)
     })
-    window.location.assign('reservahecha')
+    window.location.assign('/TurnosPage')
     }
 
   } catch (error) {
@@ -158,7 +158,7 @@ const handleChangeAll = () => {
          <Typography variant="subtitle2" style={{color: "red", textAlign:"center", marginTop:"20px"}}>{message.error}</Typography>
 
       <Routes>
-        <Route path="/reservahecha/*" element={<TurnosPage />} />
+        <Route path="/TurnosPage/*" element={<TurnosPage />} />
       </Routes>
     </>
   );

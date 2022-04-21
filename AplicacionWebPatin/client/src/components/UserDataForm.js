@@ -19,7 +19,7 @@ export const UserDataForm = () => {
     const { userById } = useContext(UserByIdContext)
 
     const homePage = () => {
-        window.location.assign('/getallusers')
+        window.location.assign('/PersonalDataPage')
     }
 
     const formik = useFormik({
@@ -43,9 +43,9 @@ export const UserDataForm = () => {
 
         onSubmit: async (values) => {
             try {
-                const response = await axios.put(`http://localhost:3001/api/users/updateUser/${userById.id}`, values)
+                const response = await axios.put(`/api/users/updateUser/${userById.id}`, values)
                 console.log('respuesta de axios user', response)
-                window.alert('EL usuario ha sido modificado exitosamente')
+                window.alert('El usuario ha sido modificado exitosamente')
                 homePage()
             } catch (error) {
                 console.log(error)

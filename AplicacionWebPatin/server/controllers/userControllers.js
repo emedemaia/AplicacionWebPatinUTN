@@ -121,7 +121,7 @@ const createNewPassword = async (req, res) => {
             res.send('Las contraseñas no coinciden')
         }
     } else {
-        console.log('usuario no encontrado del else')
+        console.log('usuario no encontrado')
     }
 
 }

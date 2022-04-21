@@ -27,7 +27,7 @@ export const GetAllUsers = () => {
 
   const allUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/admin/allusers',
+      const response = await axios.get('/api/admin/allusers',
         {
           headers: { authorization: localStorage.getItem('isAuthenticated') }
 
@@ -49,11 +49,11 @@ export const GetAllUsers = () => {
   const navigate = useNavigate()
 
   const handleClickDataPage = () => {
-    navigate('datapage')
+    navigate('/UserDataPage')
   }
 
   const handleClickClean = () => {
-    window.location.assign('/getallusers')
+    window.location.assign('/GetAllUsersPage')
   }
   
   console.log('Ésta es la lista de usuarios', userList)
@@ -153,7 +153,7 @@ export const GetAllUsers = () => {
 
 
       <Routes>
-        <Route path='/datapage/*' element={
+        <Route path='/UserDataPage/*' element={
           <UserByIdContext.Provider value={{ userById, setUserById }}>
             <UserDataPage />
           </UserByIdContext.Provider>

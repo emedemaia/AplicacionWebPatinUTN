@@ -50,7 +50,7 @@ export const PasswordUpdateForm = () => {
     };
 
     const handleClickAdmin = async () => {
-        const getadminbyid = await axios.get(`http://localhost:3001/api/admin/adminbyid/${userValuesObj.id}`)
+        const getadminbyid = await axios.get(`/api/admin/adminbyid/${userValuesObj.id}`)
         localStorage.setItem('userValues', JSON.stringify(getadminbyid.data))
         console.log('nuevo userValues ', userValues)
 
@@ -58,7 +58,7 @@ export const PasswordUpdateForm = () => {
 
 
     const handleClick = async () => {
-        const getuserbyid = await axios.get(`http://localhost:3001/api/users/userbyid/${userValuesObj.id}`)
+        const getuserbyid = await axios.get(`/api/users/userbyid/${userValuesObj.id}`)
         localStorage.setItem('userValues', JSON.stringify(getuserbyid.data))
         console.log('nuevo userValues ', userValues)
 
@@ -85,14 +85,14 @@ export const PasswordUpdateForm = () => {
         onSubmit: async (values, { resetForm }) => {
             try {
                 if (userValuesObj.admin) {
-                    const responsePwdAdmin = await axios.post('http://localhost:3001/api/admin/createPassword', values,
+                    const responsePwdAdmin = await axios.post('/api/admin/createPassword', values,
                         { headers: { authorization: localStorage.getItem('isAuthenticated') } })
 
                     console.log('respuesta de axios admin', responsePwdAdmin.data)
 
                     if (responsePwdAdmin.data) {
 
-                        const updatePassword = await axios.put(`http://localhost:3001/api/admin/updatePassword/${userValuesObj.id}`, { password: responsePwdAdmin.data.password }, {
+                        const updatePassword = await axios.put(`/api/admin/updatePassword/${userValuesObj.id}`, { password: responsePwdAdmin.data.password }, {
                             headers: {
                                 authorization: localStorage.getItem('isAuthenticated'),
                             }
@@ -109,7 +109,7 @@ export const PasswordUpdateForm = () => {
 
                 } else {
 
-                    const responsePwdUser = await axios.post('http://localhost:3001/api/users/createPassword', values,
+                    const responsePwdUser = await axios.post('/api/users/createPassword', values,
                         {
                             headers: {
                                 authorization: localStorage.getItem('isAuthenticated'),
@@ -121,7 +121,7 @@ export const PasswordUpdateForm = () => {
 
                     if (responsePwdUser.data) {
 
-                        const updatePassword = await axios.put(`http://localhost:3001/api/users/updatePassword/${userValuesObj.id}`, { password: responsePwdUser.data.password }, {
+                        const updatePassword = await axios.put(`/api/users/updatePassword/${userValuesObj.id}`, { password: responsePwdUser.data.password }, {
                             headers: {
                                 authorization: localStorage.getItem('isAuthenticated'),
                             }
@@ -247,7 +247,7 @@ export const PasswordUpdateForm = () => {
                 </Stack>
             </Box>
             <Routes>
-                <Route exact path="/datospersonales" element={<PersonalDataPage />} />
+                <Route exact path="/PersonalDataPage" element={<PersonalDataPage />} />
             </Routes>
 
         </div>
